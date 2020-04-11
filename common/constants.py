@@ -12,3 +12,9 @@ TRAINING_PARAMS = {
         'optimizer': 'Adam',
         'batch_size': 128
 }
+
+CONV_DENSE_UNITS = [100]
+CONV_FILTERS = 5
+KERNEL_SIZE = 5
+STRIDE = 2
+POOL_SIZE = 2
