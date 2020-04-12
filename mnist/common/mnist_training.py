@@ -46,7 +46,10 @@ def test_saved_model():
 
     new_model = load_model('../models/alice_conv_model')
     new_model.evaluate(test_data, test_labels)
+    infer = new_model.signatures["serving_default"]
+    print(infer.structured_input_signature)
+    print(infer.structured_outputs)
 
 
-train_mnist_model('Conv')
+# train_mnist_model('Conv')
 test_saved_model()

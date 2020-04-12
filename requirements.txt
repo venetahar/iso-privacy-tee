@@ -1,3 +1,5 @@
 keras
 tensorflow
 numpy
+pydot
+pydot_ng
