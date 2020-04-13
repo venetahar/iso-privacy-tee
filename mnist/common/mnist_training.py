@@ -2,7 +2,7 @@ from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.models import load_model
 
-from common.constants import DENSE_UNITS, NUM_CLASSES, TRAINING_PARAMS, MNIST_WIDTH, MNIST_HEIGHT, NUM_CHANNELS, \
+from mnist.common.constants import DENSE_UNITS, NUM_CLASSES, TRAINING_PARAMS, MNIST_WIDTH, MNIST_HEIGHT, NUM_CHANNELS, \
     KERNEL_SIZE, STRIDE, CONV_DENSE_UNITS, POOL_SIZE, CONV_FILTERS, INPUT_SHAPE, CONV_MODEL_TYPE, FC_MODEL_TYPE
 from common.model_training import ModelTraining
 from common.utils.data_utils import DataUtils
