@@ -38,4 +38,4 @@ class ModelTraining:
         :param test_labels: The test labels.
         """
         metrics = self.model.evaluate(test_data, test_labels, verbose=0)
-        print(print('Test set: Loss: ({:.4f}%) Accuracy: ({:.4f}%)'.format(metrics[0], metrics[1])))
+        print('Test set: Loss: ({:.4f}%) Accuracy: ({:.4f}%)'.format(metrics[0], metrics[1]))

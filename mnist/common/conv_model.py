@@ -7,7 +7,7 @@ class ConvModel:
     Creates a convolutional model.
     """
 
-    def __init__(self, kernel_size, stride, channels, pool_size, dense_units, num_classes):
+    def __init__(self, kernel_size, stride, channels, pool_size, dense_units, num_classes, input_shape):
         """
         Returns a ConvModel.
         :param kernel_size: The kernel size.
@@ -16,11 +16,13 @@ class ConvModel:
         :param pool_size: The pool size.
         :param dense_units: The dense units.
         :param num_classes: The number of classes.
+        :param input_shape: The input shape.
         """
         self.model = Sequential()
 
         self.model.add(
-            Conv2D(channels, kernel_size=kernel_size, activation='relu', strides=stride, padding='same')
+            Conv2D(channels, kernel_size=kernel_size, activation='relu', strides=stride, padding='same',
+                   input_shape=input_shape)
         )
         self.model.add(
             AveragePooling2D(pool_size=pool_size)

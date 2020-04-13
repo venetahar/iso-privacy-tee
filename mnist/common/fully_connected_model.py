@@ -7,17 +7,17 @@ class FullyConnectedModel:
     Creates a Fully Connected Model.
     """
 
-    def __init__(self, dense_units, num_classes):
+    def __init__(self, dense_units, num_classes, input_shape):
         """
         Returns a FullyConnectedModel.
         :param dense_units: The dense units.
         :param num_classes: The number of classes.
+        :param input_shape: The input shape.
         """
         self.model = Sequential()
 
-        self.model.add(Flatten())
+        self.model.add(Flatten(input_shape=input_shape))
 
-        # Add the fully connected layers
         for dense_unit in dense_units:
             self.model.add(
                 Dense(dense_unit, activation='relu')
