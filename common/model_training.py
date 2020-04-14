@@ -31,6 +31,16 @@ class ModelTraining:
                        verbose=1, shuffle=True)
         print(self.model.summary())
 
+    def train_generator(self, training_data_generator):
+        """
+        Performs training using a training data generator.
+        :param training_data_generator: The training data generator.
+        """
+        num_steps = len(training_data_generator) / self.parameters['batch_size']
+        self.model.fit_generator(training_data_generator, steps_per_epoch=num_steps,
+                                 epochs=self.parameters['num_epochs'], verbose=1, shuffle=True)
+        print(self.model.summary())
+
     def evaluate_plain_text(self, test_data, test_labels):
         """
         Evaluates the model in plain text.
@@ -38,4 +48,13 @@ class ModelTraining:
         :param test_labels: The test labels.
         """
         metrics = self.model.evaluate(test_data, test_labels, verbose=0)
+        print('Test set: Loss: ({:.4f}%) Accuracy: ({:.4f}%)'.format(metrics[0], metrics[1]))
+
+    def evaluate_generator(self, test_data_generator):
+        """
+        Evaluates the model using a test data generator.
+        :param test_data_generator: The test data generator.
+        """
+        num_steps = len(test_data_generator) / self.parameters['batch_size']
+        metrics = self.model.evaluate_generator(test_data_generator, steps=num_steps)
         print('Test set: Loss: ({:.4f}%) Accuracy: ({:.4f}%)'.format(metrics[0], metrics[1]))
