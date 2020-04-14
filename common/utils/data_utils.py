@@ -23,7 +23,7 @@ class DataUtils:
         :param model_name: The model name. By default it's alice_model.pb.
         """
         frozen_graph = DataUtils.freeze_graph(model=model, session=K.get_session())
-        tf.train.write_graph(frozen_graph, model_path, model_name, as_text=False)
+        tf.io.write_graph(frozen_graph, model_path, model_name, as_text=False)
 
     @staticmethod
     def freeze_graph(model, session):
@@ -56,3 +56,18 @@ class DataUtils:
         """
         np.save(path_prefix + 'data', data)
         np.save(path_prefix + 'labels', labels)
+
+    @staticmethod
+    def sava_data_generator(data_generator):
+        num_steps = 1
+        steps_done = 0
+        all_data = None
+        all_labels = None
+        while steps_done < num_steps:
+            data, labels = next(data_generator)
+            all_data = data if all_data is None else np.concatenate((all_data, data), axis=0)
+            all_labels = labels if all_labels is None else np.concatenate((all_labels, labels), axis=0)
+            steps_done += 1
+
+        DataUtils.save_data(all_data, all_labels)
+

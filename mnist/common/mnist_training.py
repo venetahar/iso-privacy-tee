@@ -66,7 +66,7 @@ def test_saved_model():
     new_model.evaluate(test_data, test_labels)
 
 
-# train_mnist_model(CONV_MODEL_TYPE)
+train_mnist_model(CONV_MODEL_TYPE)
 test_saved_model()
 tee_eval = TrustedExecutionEnvironmentEvaluation()
 tee_eval.evaluate_predictions('../../mnist/data/predictions.txt', '../../mnist/data/bob_test_labels.npy')

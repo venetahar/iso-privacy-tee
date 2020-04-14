@@ -36,7 +36,7 @@ class ModelTraining:
         Performs training using a training data generator.
         :param training_data_generator: The training data generator.
         """
-        num_steps = len(training_data_generator) / self.parameters['batch_size']
+        num_steps = len(training_data_generator)
         self.model.fit_generator(training_data_generator, steps_per_epoch=num_steps,
                                  epochs=self.parameters['num_epochs'], verbose=1, shuffle=True)
         print(self.model.summary())
@@ -55,6 +55,6 @@ class ModelTraining:
         Evaluates the model using a test data generator.
         :param test_data_generator: The test data generator.
         """
-        num_steps = len(test_data_generator) / self.parameters['batch_size']
+        num_steps = len(test_data_generator)
         metrics = self.model.evaluate_generator(test_data_generator, steps=num_steps)
         print('Test set: Loss: ({:.4f}%) Accuracy: ({:.4f}%)'.format(metrics[0], metrics[1]))

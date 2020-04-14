@@ -10,8 +10,6 @@ class MalariaDataGenerator:
         self.parameters = parameters
 
         self.data_generator = ImageDataGenerator(
-            featurewise_center=True,
-            featurewise_std_normalization=True,
             validation_split=self.parameters['test_split'],
             dtype='float32',
             preprocessing_function=self.normalize

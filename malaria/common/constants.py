@@ -4,8 +4,9 @@ MALARIA_NORM_MEAN = [0.5, 0.5, 0.5]
 MALARIA_NORM_STD = [0.5, 0.5, 0.5]
 
 TEST_PERCENTAGE = 0.1
-TRAIN_BATCH_SIZE = 64
-TEST_BATCH_SIZE = 32
+# Chosen so that they are exact divisors of the num samples
+TRAIN_BATCH_SIZE = 52
+TEST_BATCH_SIZE = 54
 
 TRAINING_PARAMS = {
     'learning_rate': 0.001,

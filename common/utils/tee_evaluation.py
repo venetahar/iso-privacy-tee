@@ -9,6 +9,7 @@ class TrustedExecutionEnvironmentEvaluation:
         labels = np.where(target == 1)[1]
         prediction_scores = np.loadtxt(prediction_file_location)
         predictions = prediction_scores.argmax(axis=1)
+        print(predictions)
         correct_predictions = np.sum(predictions == labels)
         print('TEE: Test set: Accuracy: ({:.4f})'.format(correct_predictions / len(target)))
 
