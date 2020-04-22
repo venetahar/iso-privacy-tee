@@ -9,7 +9,7 @@ from mnist.common.constants import NUM_CLASSES, TRAINING_PARAMS, MNIST_WIDTH, MN
     INPUT_SHAPE, MNIST_NORM_MEAN, MNIST_NORM_STD
 
 
-def train_mnist_model(model_type, model_path, model_name):
+def train_mnist_model(model_type, model_path, model_name, target_data_path_prefix):
     """
     Trains a MNIST model and saves the model graph.
     :param model_name:
@@ -25,7 +25,7 @@ def train_mnist_model(model_type, model_path, model_name):
     model_training.train(training_data, training_labels)
     model_training.evaluate_plain_text(test_data, test_labels)
     DataUtils.save_model(model_path=model_path + model_name + '.h5', model=model)
-    DataUtils.save_data(test_data, test_labels)
+    DataUtils.save_data(test_data, test_labels, target_data_path_prefix)
     DataUtils.save_graph(model, model_path, model_name + '.pb')
 
 
