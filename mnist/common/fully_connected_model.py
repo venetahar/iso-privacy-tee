@@ -7,12 +7,12 @@ class FullyConnectedModel:
     Creates a Fully Connected Model.
     """
 
-    def __init__(self, dense_units, num_classes, input_shape):
+    def __init__(self, input_shape, dense_units, num_classes):
         """
         Returns a FullyConnectedModel.
+        :param input_shape: The input shape.
         :param dense_units: The dense units.
         :param num_classes: The number of classes.
-        :param input_shape: The input shape.
         """
         self.model = Sequential()
 

@@ -47,7 +47,7 @@ class DataUtils:
             return frozen_graph
 
     @staticmethod
-    def save_data(data, labels, path_prefix='../data/bob_test_', ):
+    def save_data(data, labels, path_prefix='../data/bob_test_'):
         """
         Saves the data in an .npy format.
         :param data: The data.
