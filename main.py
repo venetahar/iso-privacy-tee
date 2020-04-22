@@ -1,6 +1,12 @@
+from numpy.random import seed
+seed(1)
+from tensorflow import set_random_seed
+set_random_seed(2)
+
 from common.model_factory import CONV_MODEL_TYPE, FULLY_CONNECTED_MODEL_TYPE
 from malaria.common.malaria_training import evaluate_saved_model, train_malaria_model
 from mnist.common.mnist_training import test_saved_model, train_mnist_model
+from common.utils.data_utils import DataUtils
 
 MNIST_MODEL_PATH = 'mnist/models/'
 MNIST_FULLY_CONNECTED_MODEL_NAME = 'alice_fc3_model'
@@ -20,9 +26,14 @@ test_saved_model(MNIST_MODEL_PATH + MNIST_CONV_MODEL_NAME)
 # tee_eval.evaluate_predictions('../../mnist/data/predictions.txt', '../../mnist/data/bob_test_labels.npy')
 
 
-train_malaria_model(model_path=MALARIA_MODEL_PATH, model_name=MALARIA_MODEL_NAME, data_path=MALARIA_DATA_PATH)
+# train_malaria_model(model_path=MALARIA_MODEL_PATH, model_name=MALARIA_MODEL_NAME, source_data_path=MALARIA_DATA_PATH,
+#                     target_data_path_prefix='malaria/data/bob_test_')
 evaluate_saved_model(MALARIA_MODEL_PATH + MALARIA_MODEL_NAME,
-                     'malaria/data/bob_test_data_16.npy',
-                     'malaria/data/bob_test_labels_16.npy')
+                     'malaria/data/bob_test_data.npy',
+                     'malaria/data/bob_test_labels.npy')
 # tee_eval = TrustedExecutionEnvironmentEvaluation()
 # tee_eval.evaluate_predictions('../../malaria/data/predictions.txt', '../../malaria/data/bob_test_labels_16.npy')
+
+
+DataUtils.batch_data('malaria/data/bob_test_data.npy', 'malaria/data/bob_test_labels.npy', 16,
+                     'malaria/data/batched_test_data/bob_test_')

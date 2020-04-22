@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 **/**/.DS_Store
-malaria/data/*
+malaria/data/cell_images/*
 
 # C extensions
 *.so

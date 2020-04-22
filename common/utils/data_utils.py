@@ -47,19 +47,36 @@ class DataUtils:
             return frozen_graph
 
     @staticmethod
-    def save_data(data, labels, path_prefix='../data/bob_test_'):
+    def save_data(data, labels, path_prefix):
         """
         Saves the data in an .npy format.
         :param data: The data.
         :param labels: The labels.
-        :param path_prefix: The path prefix. By default: '../data/bob_test_'
+        :param path_prefix: The path prefix.
         """
         np.save(path_prefix + 'data', data)
         np.save(path_prefix + 'labels', labels)
 
     @staticmethod
-    def sava_data_generator(data_generator):
-        num_steps = 1
+    def batch_data(data_path, labels_path, batch_size, output_path_prefix):
+        data = np.load(data_path)
+        labels = np.load(labels_path)
+        num_samples = data.shape[0]
+
+        if num_samples != labels.shape[0]:
+            raise AttributeError("Number of labels must match number of data points")
+
+        index = 0
+
+        while index < num_samples:
+            new_index = index + batch_size if index + batch_size < num_samples else num_samples
+            np.save(output_path_prefix + 'data_' + str(new_index) + '.npy', data[index: new_index])
+            np.save(output_path_prefix + 'labels_' + str(new_index) + '.npy', labels[index: new_index])
+            index = new_index
+
+    @staticmethod
+    def sava_data_generator(data_generator, data_path_prefix):
+        num_steps = len(data_generator)
         steps_done = 0
         all_data = None
         all_labels = None
@@ -69,5 +86,4 @@ class DataUtils:
             all_labels = labels if all_labels is None else np.concatenate((all_labels, labels), axis=0)
             steps_done += 1
 
-        DataUtils.save_data(all_data, all_labels)
-
+        DataUtils.save_data(all_data, all_labels, data_path_prefix)

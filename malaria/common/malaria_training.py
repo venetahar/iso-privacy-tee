@@ -9,11 +9,11 @@ from malaria.common.constants import NUM_CLASSES, \
 from malaria.common.malaria_data_generator import MalariaDataGenerator
 
 
-def train_malaria_model(model_path, model_name, data_path):
+def train_malaria_model(model_path, model_name, source_data_path, target_data_path_prefix):
     """
     Trains a Malaria model and saves the model graph.
     """
-    malaria_data_generator = MalariaDataGenerator(data_path,
+    malaria_data_generator = MalariaDataGenerator(source_data_path,
                                                   parameters={
                                                       'test_batch_size': TEST_BATCH_SIZE,
                                                       'batch_size': TRAIN_BATCH_SIZE,
@@ -25,7 +25,7 @@ def train_malaria_model(model_path, model_name, data_path):
     model_training = ModelTraining(model, TRAINING_PARAMS)
     model_training.train_generator(malaria_data_generator.train_data_generator)
     model_training.evaluate_generator(malaria_data_generator.test_data_generator)
-    DataUtils.sava_data_generator(malaria_data_generator.test_data_generator)
+    DataUtils.sava_data_generator(malaria_data_generator.test_data_generator, target_data_path_prefix)
     DataUtils.save_model(model_path=model_path + model_name + '.h5', model=model)
     DataUtils.save_graph(model, model_path=model_path, model_name=model_name + '.pb')
 

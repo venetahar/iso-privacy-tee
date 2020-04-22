@@ -1,5 +1,5 @@
 from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Conv2D, AveragePooling2D, Flatten, Dense
+from tensorflow.keras.layers import Conv2D, AveragePooling2D, Flatten, Dense, Dropout
 
 
 class ConvPoolModel:
@@ -35,6 +35,8 @@ class ConvPoolModel:
         self.model.add(
             AveragePooling2D(pool_size=avg_pool_sizes[1])
         )
+
+        self.model.add(Dropout(0.5))
 
         self.model.add(Flatten())
 
