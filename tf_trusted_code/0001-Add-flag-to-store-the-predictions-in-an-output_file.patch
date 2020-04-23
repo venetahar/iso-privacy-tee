@@ -1,0 +1,47 @@
+From ad1ed06c9652a8e399b6fee00ca3a3b53953374b Mon Sep 17 00:00:00 2001
+From: Veneta Haralampieva <venetaharalampieva@Venetas-MacBook-Pro.local>
+Date: Thu, 23 Apr 2020 17:36:57 +0100
+Subject: [PATCH] Add flag to store the predictions in an output_file
+
+---
+ tf_trusted_custom_op/model_run.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/tf_trusted_custom_op/model_run.py b/tf_trusted_custom_op/model_run.py
+index b25d310..b21a0b8 100644
+--- a/tf_trusted_custom_op/model_run.py
++++ b/tf_trusted_custom_op/model_run.py
+@@ -19,6 +19,8 @@ parser.add_argument('--model_name', type=str, default='model', help='Name your m
+ parser.add_argument('--input_shape', nargs='+', help='The input shape')
+ parser.add_argument('--from_file', action='store_true',
+                     help='Tell the enclave to read from a file, file must exists on the enclave machine and already converted to tflite format')
++parser.add_argument(
++    '--output_file', type=str, default="predictions.txt", help='Name of the output file where the predictions will be saved. By default: predictions.txt')
+ config = parser.parse_args()
+ 
+ dirname = os.path.dirname(tft.__file__)
+@@ -36,6 +38,7 @@ benchmark = config.benchmark
+ batch_size = config.batch_size
+ model_name = config.model_name
+ from_file = config.from_file
++output_file = config.output_file
+ 
+ 
+ def get_output_shape_and_type(model_file, output_name):
+@@ -111,7 +114,6 @@ if not from_file:
+     tflite_bytes = convert_model_to_tflite(model_file, [input_name], [output_name], input_shape)
+ 
+ put = np.load(input_file)
+-
+ if benchmark:
+     tf.reset_default_graph()
+ 
+@@ -135,4 +137,5 @@ else:
+         placeholder = tf.placeholder(shape=input_shape, dtype=tf.float32)
+         out = model_predict(model_name, placeholder, output_shape, dtype=output_type)
+         actual = sess.run(out, feed_dict={placeholder: put})
++        np.savetxt(output_file, actual)
+         print("Prediction: ", actual)
+-- 
+2.24.2 (Apple Git-127)
+
