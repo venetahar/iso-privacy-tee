@@ -18,8 +18,8 @@ MALARIA_MODEL_PATH = 'malaria/models/'
 MALARIA_DATA_PATH = 'malaria/data/cell_images/'
 MALARIA_MODEL_NAME = 'alice_conv_pool_model'
 MALARIA_TARGET_DATA_PATH_PREFIX = 'malaria/data/bob_test_'
-MALARIA_BATCHED_TEST_DATA_DIR = 'tf_trusted_code/malaria/data/batched_test_data/'
-MALARIA_BATCHED_TEST_DATA_LABELS_DIR = 'tf_trusted_code/malaria/data/batched_test_labels/'
+MALARIA_BATCHED_TEST_DATA_DIR = 'tf_trusted_code/malaria/batched_test_data/'
+MALARIA_BATCHED_TEST_DATA_LABELS_DIR = 'tf_trusted_code/malaria/batched_test_labels/'
 MALARIA_BATCHED_TEST_DATA_FILE_PREFIX = 'bob_test_'
 
 

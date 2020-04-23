@@ -1,16 +1,14 @@
 import numpy as np
 import subprocess
 import os
-# from natsort import natsorted
 
 
-def test_malaria_model():
-    all_prediction_scores = None
-    input_files = os.listdir('malaria/batched_test_data/')
+def test_malaria_model(input_files_dir, predictions_dir):
+    input_files = os.listdir(input_files_dir)
     for input_filename in input_files:
-        input_file = 'malaria/batched_test_data/' + input_filename
+        input_file = input_files_dir + input_filename
         output_file_name = get_output_filename(input_filename)
-        output_file = 'malaria/predictions/' + output_file_name
+        output_file = predictions_dir + output_file_name
         test_batch_size = get_num_samples_file(input_file)
         subprocess.run(['python3', 'model_run.py', '--model_file', 'alice_conv_pool_model.pb',
                         '--input_file', input_file, '--input_name', 'conv2d_input',
@@ -18,10 +16,9 @@ def test_malaria_model():
                         '--output_file', output_file])
 
 
-
 def get_output_filename(input_filename):
-    input_file_prefix = input_filename.rsplit('.', 1)[0]
-    return input_file_prefix + '_predictions.txt'
+    common_file_prefix = input_filename.rsplit('.', 1)[0]
+    return common_file_prefix + '_predictions.txt'
 
 
 def get_num_samples_file(file_name):
@@ -29,4 +26,4 @@ def get_num_samples_file(file_name):
     return input_data.shape[0]
 
 
-test_malaria_model()
+test_malaria_model('malaria/batched_test_data/', 'malaria/predictions/')
