@@ -11,6 +11,7 @@ You can follow the instructions in the README file for setting that project up. 
 it to build correctly  (I am using 0.24.1 and it seems to work).
 
 To perform private inference do the following steps:
+:q!
 
 1. Find a trained MNIST model in the following directory: ```mnist/models/alice_model_dir/alice_model.pb```
 2. The test data is saved here: ```mnist/data/bob_test_data.npy```

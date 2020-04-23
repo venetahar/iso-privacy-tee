@@ -36,8 +36,6 @@ class ConvPoolModel:
             AveragePooling2D(pool_size=avg_pool_sizes[1])
         )
 
-        self.model.add(Dropout(0.5))
-
         self.model.add(Flatten())
 
         for dense_unit in dense_units:
