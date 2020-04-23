@@ -58,7 +58,7 @@ class DataUtils:
         np.save(path_prefix + 'labels', labels)
 
     @staticmethod
-    def batch_data(data_path, labels_path, batch_size, output_path_prefix):
+    def batch_data(data_path, labels_path, batch_size, output_data_dir, output_labels_dir, file_prefix):
         data = np.load(data_path)
         labels = np.load(labels_path)
         num_samples = data.shape[0]
@@ -70,8 +70,8 @@ class DataUtils:
 
         while index < num_samples:
             new_index = index + batch_size if index + batch_size < num_samples else num_samples
-            np.save(output_path_prefix + 'data_' + str(new_index) + '.npy', data[index: new_index])
-            np.save(output_path_prefix + 'labels_' + str(new_index) + '.npy', labels[index: new_index])
+            np.save(output_data_dir + file_prefix + 'data_' + str(new_index) + '.npy', data[index: new_index])
+            np.save(output_labels_dir + file_prefix + 'data_' + str(new_index) + '_labels' +'.npy', labels[index: new_index])
             index = new_index
 
     @staticmethod
