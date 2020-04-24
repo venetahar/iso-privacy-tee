@@ -87,3 +87,11 @@ class DataUtils:
             steps_done += 1
 
         DataUtils.save_data(all_data, all_labels, data_path_prefix)
+
+    @staticmethod
+    def load_model(model_path):
+        with tf.io.gfile.GFile(model_path, "rb") as f:
+            graph_def = tf.compat.v1.GraphDef()
+            graph_def.ParseFromString(f.read())
+
+        return graph_def
