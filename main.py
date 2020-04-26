@@ -56,5 +56,5 @@ def run_malaria_experiment(should_retrain_model=False):
     # tee_eval.evaluate_predictions('../../malaria/data/predictions.txt', '../../malaria/data/bob_test_labels_16.npy')
 
 
-run_mnist_fully_connected_experiment()
-run_mnist_conv_experiment()
+# run_mnist_fully_connected_experiment(True)
+run_mnist_conv_experiment(True)
