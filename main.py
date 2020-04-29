@@ -43,4 +43,5 @@ def evaluate_malaria_experiment(should_retrain_model=False):
 
 
 # evaluate_mnist_fully_connected_experiment(True)
-evaluate_mnist_conv_experiment(True)
+# evaluate_mnist_conv_experiment(True)
+evaluate_malaria_experiment(True)

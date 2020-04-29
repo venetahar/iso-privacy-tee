@@ -1,5 +1,7 @@
+import numpy as np
 import tensorflow as tf
 import os
+import time
 import tf_trusted_custom_op as tft
 
 from model_utils import ModelUtils
@@ -24,6 +26,7 @@ class PrivateInference:
         benchmark = self.parameters["benchmark"]
         model_name = self.parameters["model_name"]
         num_samples = test_data.shape[0]
+        print("Num samples", num_samples)
         with tf.Session():
             input_shape = ModelUtils.get_input_shape(input_name, num_samples, model_file)
             output_shape, output_type = ModelUtils.get_output_shape_and_type(output_name, num_samples, model_file)
@@ -37,9 +40,8 @@ class PrivateInference:
             with tf.Session() as sess:
                 load_node = model_load(model_name, tflite_bytes)
                 load_node.run()
-                placeholder = tf.placeholder(shape=input_shape, dtype=tf.float32)
-                out = model_predict(model_name, placeholder, output_shape, dtype=output_type)
-                prediction_scores = sess.run(out, feed_dict={placeholder: test_data})
+                prediction_scores = PrivateInference.evaluate_model(input_shape, model_name, model_predict,
+                                                                    output_shape, output_type, sess, test_data)
                 return prediction_scores
 
     @staticmethod
@@ -49,15 +51,21 @@ class PrivateInference:
         with tf.Session() as sess:
             load_node = model_load(model_name, tflite_bytes)
             load_node.run()
+            run_times = []
+            for i in range(0, 20):
+                print("Run", i)
+                start_time = time.time()
+                PrivateInference.evaluate_model(input_shape, model_name, model_predict, output_shape, output_type,
+                                                sess, test_data)
+                end_time = time.time()
+                run_times.append(end_time - start_time)
+        print("============Performance metrics: ============ ")
+        print("Average evaluate model time: {}".format(np.mean(run_times)))
 
-            for i in range(0, 30):
-                placeholder = tf.placeholder(shape=input_shape, dtype=tf.float32)
-                out = model_predict(model_name, placeholder, output_shape, dtype=output_type)
-
-                meta = tf.RunMetadata()
-                sess.run(out, feed_dict={placeholder: test_data},
-                         options=tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE),
-                         run_metadata=meta)
-                ModelUtils.save_to_tensorboard(i, sess, meta)
+    @staticmethod
+    def evaluate_model(input_shape, model_name, model_predict, output_shape, output_type, sess, test_data):
+        placeholder = tf.placeholder(shape=input_shape, dtype=tf.float32)
+        out = model_predict(model_name, placeholder, output_shape, dtype=output_type)
+        return sess.run(out, feed_dict={placeholder: test_data})
 
 

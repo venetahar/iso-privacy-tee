@@ -10,19 +10,26 @@ def calculate_num_correct_predictions(prediction_scores, one_hot_labels):
     return np.sum(predictions == labels)
 
 
-def run_mnist_conv_experiment():
+def run_mnist_conv_experiment(should_benchmark=False):
     test_data, test_data_labels = load_mnist_test_data()
     parameters = {
         "model_file": "mnist/models/alice_conv_model.pb",
         "input_name": "conv2d_input",
         "output_name": "dense_1/Softmax",
         "model_name": "alice_conv_model",
-        "benchmark": False
+        "benchmark": should_benchmark
     }
+    evaluate_model(parameters, should_benchmark, test_data, test_data_labels)
+
+
+def evaluate_model(parameters, should_benchmark, test_data, test_data_labels):
     private_inference = PrivateInference(parameters)
-    prediction_scores = private_inference.perform_inference(test_data)
-    correct_predictions = calculate_num_correct_predictions(prediction_scores, test_data_labels)
-    print('TEE: Test set: Accuracy: ({:.4f})'.format(correct_predictions / test_data_labels.shape[0]))
+    if should_benchmark:
+        private_inference.perform_inference(test_data[0:1])
+    else:
+        prediction_scores = private_inference.perform_inference(test_data)
+        correct_predictions = calculate_num_correct_predictions(prediction_scores, test_data_labels)
+        print('TEE: Test set: Accuracy: ({:.4f})'.format(correct_predictions / test_data_labels.shape[0]))
 
 
 def load_mnist_test_data():
@@ -37,56 +44,58 @@ def load_malaria_test_data():
     return test_data, test_data_labels
 
 
-def run_mnist_fully_connected_experiment():
+def run_mnist_fully_connected_experiment(should_benchmark=False):
     test_data, test_data_labels = load_mnist_test_data()
     parameters = {
         "model_file": "mnist/models/alice_fc3_model.pb",
         "input_name": "flatten_input",
         "output_name": "dense_2/Softmax",
         "model_name": "alice_fc3_model",
-        "benchmark": False
+        "benchmark": should_benchmark
     }
-    private_inference = PrivateInference(parameters)
-    prediction_scores = private_inference.perform_inference(test_data)
-    correct_predictions = calculate_num_correct_predictions(prediction_scores, test_data_labels)
-    print('TEE: Test set: Accuracy: ({:.4f})'.format(correct_predictions / test_data_labels.shape[0]))
+    evaluate_model(parameters, should_benchmark, test_data, test_data_labels)
 
 
-def run_malaria_conv_experiment():
+def run_malaria_conv_experiment(should_benchmark=False):
     test_data, test_data_labels = load_malaria_test_data()
     parameters = {
         "model_file": "malaria/models/alice_conv_pool_model.pb",
         "input_name": "conv2d_input",
         "output_name": "dense_1/Softmax",
         "model_name": "alice_conv_pool_model",
-        "benchmark": False
+        "benchmark": should_benchmark
     }
 
     private_inference = PrivateInference(parameters)
-    batch_size = 16
-    index = 0
-    num_samples = test_data.shape[0]
-    correct_predictions = 0
-    while index < num_samples:
-        new_index = index + batch_size if index + batch_size < num_samples else num_samples
-        prediction_scores = private_inference.perform_inference(test_data[index: new_index])
-        correct_predictions += calculate_num_correct_predictions(prediction_scores, test_data_labels[index: new_index])
-        index = new_index
-    print('TEE: Test set: Accuracy: ({:.4f})'.format(correct_predictions / test_data_labels.shape[0]))
+    if should_benchmark:
+        private_inference.perform_inference(test_data[0: 1])
+    else:
+        batch_size = 18
+        index = 0
+        num_samples = test_data.shape[0]
+        correct_predictions = 0
+        while index < num_samples:
+            new_index = index + batch_size if index + batch_size < num_samples else num_samples
+            prediction_scores = private_inference.perform_inference(test_data[index: new_index])
+            correct_predictions += calculate_num_correct_predictions(prediction_scores,
+                                                                     test_data_labels[index: new_index])
+            index = new_index
+        print('TEE: Test set: Accuracy: ({:.4f})'.format(correct_predictions / test_data_labels.shape[0]))
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--experiment_name', type=str, default='',
                         help='The experiment name. Can be either: mnist_fc, mnist_conv or malaria_conv')
+    parser.add_argument('--benchmark', type=bool, default=False,
+                        help='Whether to benchmark the experiment. Default False.')
     config = parser.parse_args()
 
     if config.experiment_name == 'mnist_fc':
-        run_mnist_fully_connected_experiment()
+        run_mnist_fully_connected_experiment(config.benchmark)
     elif config.experiment_name == 'mnist_conv':
-        run_mnist_conv_experiment()
+        run_mnist_conv_experiment(config.benchmark)
     elif config.experiment_name == 'malaria_conv':
-        run_malaria_conv_experiment()
+        run_malaria_conv_experiment(config.benchmark)
     else:
         print("Please supply a valid experiment type. Can be either: mnist_fc, mnist_conv or malaria_conv ")
-

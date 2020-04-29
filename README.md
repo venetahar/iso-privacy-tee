@@ -18,3 +18,8 @@ MALARIA Dataset:
 2. ```cd $TF_TRUSTED_INSALL_PATH$/tf_trusted_custom_op/```
 3. Run: ```python3 experiments.py --experiment_name=$EXPERIMENT_NAME$```. Valid experiment names are: 
 mnist_conv, mnist_fc and malaria_conv
+
+Important!!! I highly suggest restarting the docker container between experiments. I have had problems with 
+the model not being cleared correctly and an old one being used instead. Sometimes, when doing inference followed by
+benchmarking malloc errors appear. 
+Could be related: https://github.com/tensorflow/tensorflow/issues/33009#issuecomment-575470731
