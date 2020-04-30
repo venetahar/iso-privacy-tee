@@ -1,3 +1,6 @@
+import time
+import numpy as np
+
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import load_model
 from tensorflow.keras.utils import to_categorical
@@ -54,4 +57,14 @@ def test_saved_model(model_path):
 
     new_model = load_model(model_path + '.h5')
     new_model.evaluate(test_data, test_labels)
+
+
+def benchmark_mnist_model(model_path, num_runs=20):
+    (_, _), (test_data, test_labels) = mnist.load_data()
+    test_data, test_labels = preprocess(test_data, test_labels)
+
+    new_model = load_model(model_path + '.h5')
+    model_training = ModelTraining(new_model, TRAINING_PARAMS)
+    model_training.benchmark_model(num_runs, test_data[0:1])
+
 

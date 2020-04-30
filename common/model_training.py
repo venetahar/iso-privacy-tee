@@ -1,3 +1,6 @@
+import time
+import numpy as np
+
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.optimizers import Adam, SGD
 
@@ -58,3 +61,16 @@ class ModelTraining:
         num_steps = len(test_data_generator)
         metrics = self.model.evaluate_generator(test_data_generator, steps=num_steps)
         print('Test set: Loss: ({:.4f}%) Accuracy: ({:.4f}%)'.format(metrics[0], metrics[1]))
+
+    def benchmark_model(self, num_runs, data_instance):
+        print(data_instance.shape)
+        all_metrics = []
+        for index in range(0, num_runs):
+            start_time = time.time()
+            self.model.predict(data_instance)
+            end_time = time.time()
+            all_metrics.append(end_time - start_time)
+
+        print("============Performance metrics: ============ ")
+        print("Average plaintext evaluate model time: {}".format(np.mean(all_metrics)))
+

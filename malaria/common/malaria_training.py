@@ -40,3 +40,11 @@ def evaluate_saved_model(model_path, test_data_path, test_labels_path):
     print(pred)
     new_model.evaluate(test_data, test_labels)
 
+
+def benchmark_malaria_model(model_path, test_data_path, num_runs=20):
+    test_data = np.load(test_data_path)
+    new_model = load_model(model_path + '.h5')
+    model_training = ModelTraining(new_model, TRAINING_PARAMS)
+    model_training.benchmark_model(num_runs, test_data[0:1])
+
+

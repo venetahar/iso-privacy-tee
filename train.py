@@ -6,8 +6,8 @@ from tensorflow import set_random_seed
 set_random_seed(2)
 
 from common.model_factory import CONV_MODEL_TYPE, FULLY_CONNECTED_MODEL_TYPE
-from malaria.common.malaria_training import evaluate_saved_model, train_malaria_model
-from mnist.common.mnist_training import test_saved_model, train_mnist_model
+from malaria.common.malaria_training import evaluate_saved_model, train_malaria_model, benchmark_malaria_model
+from mnist.common.mnist_training import test_saved_model, train_mnist_model, benchmark_mnist_model
 
 MNIST_MODEL_PATH = 'mnist/models/'
 MNIST_FULLY_CONNECTED_MODEL_NAME = 'alice_fc3_model'
@@ -44,4 +44,7 @@ def evaluate_malaria_experiment(should_retrain_model=False):
 
 # evaluate_mnist_fully_connected_experiment(True)
 # evaluate_mnist_conv_experiment(True)
-evaluate_malaria_experiment(True)
+# evaluate_malaria_experiment(True)
+
+benchmark_mnist_model(MNIST_MODEL_PATH + MNIST_FULLY_CONNECTED_MODEL_NAME)
+# benchmark_malaria_model(MALARIA_MODEL_PATH + MALARIA_MODEL_NAME, MALARIA_TARGET_DATA_PATH_PREFIX + 'data.npy')
