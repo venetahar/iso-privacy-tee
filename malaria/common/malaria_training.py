@@ -31,6 +31,12 @@ def train_malaria_model(model_path, model_name, source_data_path, target_data_pa
 
 
 def evaluate_saved_model(model_path, test_data_path, test_labels_path):
+    """
+    Evaluates a saved model.
+    :param model_path: The model path.
+    :param test_data_path: The test data path.
+    :param test_labels_path: The test labels paths.
+    """
     test_data = np.load(test_data_path)
     test_labels = np.load(test_labels_path)
     new_model = load_model(model_path + '.h5')
@@ -42,6 +48,12 @@ def evaluate_saved_model(model_path, test_data_path, test_labels_path):
 
 
 def benchmark_malaria_model(model_path, test_data_path, num_runs=20):
+    """
+    Benchmarks the malaria model.
+    :param model_path: The model path.
+    :param test_data_path: The test data path.
+    :param num_runs: The number of runs.
+    """
     test_data = np.load(test_data_path)
     new_model = load_model(model_path + '.h5')
     model_training = ModelTraining(new_model, TRAINING_PARAMS)

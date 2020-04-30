@@ -5,24 +5,26 @@ from private_inference import PrivateInference
 
 
 def calculate_num_correct_predictions(prediction_scores, one_hot_labels):
+    """
+    Calculates the number of correct predictions.
+    :param prediction_scores: The prediction scores.
+    :param one_hot_labels: The one hot labels.
+    :return: the number of correct predictions.
+    """
     predictions = prediction_scores.argmax(axis=1)
     labels = np.where(one_hot_labels == 1)[1]
     return np.sum(predictions == labels)
 
 
-def run_mnist_conv_experiment(should_benchmark=False):
-    test_data, test_data_labels = load_mnist_test_data()
-    parameters = {
-        "model_file": "mnist/models/alice_conv_model.pb",
-        "input_name": "conv2d_input",
-        "output_name": "dense_1/Softmax",
-        "model_name": "alice_conv_model",
-        "benchmark": should_benchmark
-    }
-    evaluate_model(parameters, should_benchmark, test_data, test_data_labels)
-
-
 def evaluate_model(parameters, should_benchmark, test_data, test_data_labels):
+    """
+    Evaluates the model.
+    :param parameters: The parameters.
+    :param should_benchmark: Whether it should benchmark.
+    :param test_data: The test data.
+    :param test_data_labels: The test labels.
+    :return:
+    """
     private_inference = PrivateInference(parameters)
     if should_benchmark:
         private_inference.perform_inference(test_data[0:1])
@@ -33,18 +35,30 @@ def evaluate_model(parameters, should_benchmark, test_data, test_data_labels):
 
 
 def load_mnist_test_data():
+    """
+    Loads the mnist test data and labels.
+    :return: the mnist test data and labels.
+    """
     test_data = np.load("mnist/data/bob_test_data.npy")
     test_data_labels = np.load("mnist/data/bob_test_labels.npy")
     return test_data, test_data_labels
 
 
 def load_malaria_test_data():
+    """
+    Loads the malaria test data and labels.
+    :return: the malaria test data and labels.
+    """
     test_data = np.load("malaria/data/bob_test_data.npy")
     test_data_labels = np.load("malaria/data/bob_test_labels.npy")
     return test_data, test_data_labels
 
 
 def run_mnist_fully_connected_experiment(should_benchmark=False):
+    """
+    Runs the mnist fc experiment.
+    :param should_benchmark: Whether it should benchmark.
+    """
     test_data, test_data_labels = load_mnist_test_data()
     parameters = {
         "model_file": "mnist/models/alice_fc3_model.pb",
@@ -56,7 +70,27 @@ def run_mnist_fully_connected_experiment(should_benchmark=False):
     evaluate_model(parameters, should_benchmark, test_data, test_data_labels)
 
 
+def run_mnist_conv_experiment(should_benchmark=False):
+    """
+    Runs the mnist conv experiment.
+    :param should_benchmark: Whether it should benchmark.
+    """
+    test_data, test_data_labels = load_mnist_test_data()
+    parameters = {
+        "model_file": "mnist/models/alice_conv_model.pb",
+        "input_name": "conv2d_input",
+        "output_name": "dense_1/Softmax",
+        "model_name": "alice_conv_model",
+        "benchmark": should_benchmark
+    }
+    evaluate_model(parameters, should_benchmark, test_data, test_data_labels)
+
+
 def run_malaria_conv_experiment(should_benchmark=False):
+    """
+    Runs the malaria conv experiment.
+    :param should_benchmark: Whether it should benchmark.
+    """
     test_data, test_data_labels = load_malaria_test_data()
     parameters = {
         "model_file": "malaria/models/alice_conv_pool_model.pb",

@@ -63,6 +63,11 @@ class ModelTraining:
         print('Test set: Loss: ({:.4f}%) Accuracy: ({:.4f}%)'.format(metrics[0], metrics[1]))
 
     def benchmark_model(self, num_runs, data_instance):
+        """
+        Measures the runtime of model predicitons.
+        :param num_runs: The number of runs.
+        :param data_instance: The data instance to use.
+        """
         print(data_instance.shape)
         all_metrics = []
         for index in range(0, num_runs):

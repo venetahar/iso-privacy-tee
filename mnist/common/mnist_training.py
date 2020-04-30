@@ -48,10 +48,19 @@ def preprocess(data, labels):
 
 
 def normalize(data):
+    """
+    Normalizes the data.
+    :param data: The data.
+    :return: The normalized data.
+    """
     return (data/255.0 - MNIST_NORM_MEAN) / MNIST_NORM_STD
 
 
 def test_saved_model(model_path):
+    """
+    Tests the saved model.
+    :param model_path: The model path.
+    """
     (_, _), (test_data, test_labels) = mnist.load_data()
     test_data, test_labels = preprocess(test_data, test_labels)
 
@@ -60,6 +69,11 @@ def test_saved_model(model_path):
 
 
 def benchmark_mnist_model(model_path, num_runs=20):
+    """
+    Benchmarks the malaria model.
+    :param model_path: The model path.
+    :param num_runs: The number of runs.
+    """
     (_, _), (test_data, test_labels) = mnist.load_data()
     test_data, test_labels = preprocess(test_data, test_labels)
 
